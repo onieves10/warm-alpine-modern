@@ -1,0 +1,58 @@
+<!-- ===================== IMMERSIVE INTRO ===================== -->
+<div id="wam-intro" role="dialog" aria-label="Warm Alpine Modern — intro experience">
+  <div class="wam-glow" aria-hidden="true"></div>
+  <div class="wam-embers" aria-hidden="true"></div>
+
+  <svg class="wam-mtn" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="wamRim" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#C9A35E" stop-opacity=".55"/>
+        <stop offset="0.12" stop-color="#7a5531" stop-opacity=".3"/>
+        <stop offset="0.5" stop-color="#2a1f16" stop-opacity="1"/>
+        <stop offset="1" stop-color="#211812" stop-opacity="1"/>
+      </linearGradient>
+      <linearGradient id="wamMid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3a2a1b" stop-opacity=".6"/>
+        <stop offset="0.3" stop-color="#1f1711" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <path fill="url(#wamRim)" d="M0,520 L0,300 L180,188 L360,262 L560,120 L760,250 L980,150 L1200,262 L1440,168 L1440,520 Z"/>
+    <path fill="url(#wamMid)" d="M0,520 L0,360 L220,252 L470,360 L700,232 L960,360 L1200,270 L1440,350 L1440,520 Z"/>
+    <path fill="#140e09"       d="M0,520 L0,422 L260,342 L520,430 L820,332 L1120,430 L1440,360 L1440,520 Z"/>
+  </svg>
+
+  <div class="wam-vignette" aria-hidden="true"></div>
+
+  <div class="wam-word wam-word--1" aria-hidden="true">Warm.</div>
+  <div class="wam-word wam-word--2" aria-hidden="true">Alpine.</div>
+  <div class="wam-word wam-word--3" aria-hidden="true">Modern.</div>
+
+  <div class="wam-stage">
+    <div class="wam-lockup">
+      <p class="wam-eyebrow">House mood board</p>
+      <h1 class="wam-title">Warm Alpine Modern</h1>
+      <p class="wam-sub">A bright white shell, warmed with honey wood, velvet, leather &amp; brass.<br>Sleek by day. Glowing by night.</p>
+      <button type="button" id="wam-enter" class="wam-enter">
+        Enter
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <button type="button" id="wam-skip" class="wam-skip">Skip ↦</button>
+</div>
+
+<!-- ===================== TOP BAR ===================== -->
+<header id="wam-topbar" aria-hidden="true">
+  <span class="wam-brand">Warm Alpine <b>Modern</b></span>
+  <div class="wam-actions">
+    <button type="button" id="wam-replay" class="wam-btn wam-btn--ghost" title="Replay intro" aria-label="Replay intro">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="wam-btn-txt">Replay</span>
+    </button>
+    <a id="wam-pdf" class="wam-btn wam-btn--primary" href="Warm-Alpine-Modern.pdf" download="Warm Alpine Modern — Mood Board.pdf">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v11m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="wam-btn-txt">Download PDF</span>
+    </a>
+  </div>
+</header>

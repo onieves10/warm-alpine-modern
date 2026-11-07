@@ -1,0 +1,221 @@
+/* ============================================================
+   Warm Alpine Modern — immersive intro + top bar
+   Mobile-first. Palette pulled from the mood board itself.
+   ============================================================ */
+:root{
+  --wam-bg:#120d09;
+  --wam-espresso:#1C1915;
+  --wam-cream:#F4EDE2;
+  --wam-brass:#C9A35E;
+  --wam-amber:#F2B866;
+  --wam-amber-deep:#A8803F;
+  --wam-olive:#535B37;
+  --wam-cognac:#9A4F26;
+  --wam-teal:#1F4E5F;
+  --wam-bar-h:56px;
+}
+
+/* lock scroll while the intro is on screen */
+html.wam-intro-active, html.wam-intro-active body{ overflow:hidden !important; height:100%; }
+
+/* ===================== INTRO OVERLAY ===================== */
+#wam-intro{
+  position:fixed; inset:0; z-index:99999;
+  display:flex; align-items:center; justify-content:center;
+  background:
+    radial-gradient(120% 90% at 50% 120%, #2a1a0e 0%, #140d08 55%, #0c0806 100%);
+  color:var(--wam-cream);
+  overflow:hidden;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  height:100vh; height:100dvh;
+  cursor:default;
+  isolation:isolate;
+}
+#wam-intro.wam-ready{ cursor:pointer; }
+
+/* warm firelight / sunrise glow */
+.wam-glow{
+  position:absolute; left:50%; top:64%;
+  width:135vmax; height:135vmax;
+  transform:translate(-50%,-50%) scale(.18);
+  background:radial-gradient(circle at center,
+      rgba(242,184,102,.60) 0%,
+      rgba(201,143,60,.38) 20%,
+      rgba(154,79,38,.20) 40%,
+      rgba(20,13,9,0) 66%);
+  opacity:0; filter:blur(2px); z-index:1; will-change:transform,opacity;
+}
+#wam-intro.wam-play .wam-glow{
+  animation:wamGlowIn 2.6s ease-out forwards, wamGlowPulse 6.5s ease-in-out 2.6s infinite;
+}
+@keyframes wamGlowIn{ from{opacity:0;transform:translate(-50%,-50%) scale(.18);} to{opacity:1;transform:translate(-50%,-50%) scale(1);} }
+@keyframes wamGlowPulse{ 0%,100%{opacity:.92;transform:translate(-50%,-50%) scale(1);} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.06);} }
+
+/* rising embers */
+.wam-embers{ position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+.wam-ember{
+  position:absolute; bottom:-12px; width:5px; height:5px; border-radius:50%;
+  background:radial-gradient(circle,#FCE7BA 0%,#EBA64E 55%,rgba(235,166,78,0) 72%);
+  opacity:0; transform:scale(var(--s,1)); filter:blur(.3px);
+  animation:wamEmber var(--d,9s) linear var(--delay,0s) infinite;
+}
+@keyframes wamEmber{
+  0%{ opacity:0; transform:translate(0,0) scale(var(--s)); }
+  12%{ opacity:.85; }
+  85%{ opacity:.35; }
+  100%{ opacity:0; transform:translate(var(--x,0), -92vh) scale(var(--s)); }
+}
+
+/* alpine ridge silhouette */
+.wam-mtn{
+  position:absolute; left:0; right:0; bottom:0; width:100%; height:46vh;
+  z-index:2; transform:translateY(103%); opacity:0; will-change:transform;
+}
+#wam-intro.wam-play .wam-mtn{ animation:wamMtnRise 1.9s cubic-bezier(.22,.61,.36,1) 4.3s forwards; }
+@keyframes wamMtnRise{ to{ transform:translateY(0); opacity:1; } }
+
+/* cinematic vignette */
+.wam-vignette{
+  position:absolute; inset:0; z-index:3; pointer-events:none;
+  background:radial-gradient(130% 105% at 50% 42%, rgba(0,0,0,0) 44%, rgba(0,0,0,.6) 100%);
+}
+
+/* the staggered mood words */
+.wam-word{
+  position:absolute; inset:0; z-index:4;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  padding:0 24px; pointer-events:none; opacity:0;
+  font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:-.02em;
+  line-height:1; font-size:clamp(58px,17vw,150px);
+  color:var(--wam-cream); text-shadow:0 0 60px rgba(242,184,102,.4);
+}
+#wam-intro.wam-play .wam-word--1{ animation:wamWord 2.0s ease-out .6s both; }
+#wam-intro.wam-play .wam-word--2{ animation:wamWord 2.0s ease-out 2.3s both; }
+#wam-intro.wam-play .wam-word--3{ animation:wamWord 2.0s ease-out 4.0s both; }
+@keyframes wamWord{
+  0%{ opacity:0; transform:translateY(28px); filter:blur(14px); letter-spacing:.09em; }
+  22%{ opacity:1; transform:translateY(0); filter:blur(0); letter-spacing:-.02em; }
+  72%{ opacity:1; transform:translateY(0); filter:blur(0); }
+  100%{ opacity:0; transform:translateY(-24px); filter:blur(9px); }
+}
+
+/* final title lockup + enter */
+.wam-stage{ position:relative; z-index:5; width:100%; max-width:860px; padding:0 26px; text-align:center; }
+.wam-lockup{ opacity:0; transform:translateY(22px); }
+#wam-intro.wam-play .wam-lockup{ animation:wamLockIn 1.5s ease-out 6.0s forwards; }
+@keyframes wamLockIn{ to{ opacity:1; transform:translateY(0); } }
+
+.wam-eyebrow{
+  margin:0 0 16px; font-size:clamp(11px,3.2vw,13px); font-weight:600;
+  letter-spacing:.24em; text-transform:uppercase; color:var(--wam-brass);
+}
+.wam-title{
+  margin:0; font-family:'Urbanist','Inter',sans-serif; font-weight:700;
+  letter-spacing:-.03em; line-height:.98; font-size:clamp(46px,13vw,108px);
+  background:linear-gradient(100deg,#F4EDE2 0%,#F4EDE2 40%,#FFF6E2 50%,#F4EDE2 60%,#F4EDE2 100%);
+  background-size:230% 100%; background-position:160% 0;
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent; -webkit-text-fill-color:transparent;
+}
+#wam-intro.wam-play .wam-title{ animation:wamSheen 2.8s ease-in-out 7.2s both; }
+@keyframes wamSheen{ from{background-position:160% 0;} to{background-position:-70% 0;} }
+
+.wam-sub{
+  margin:20px auto 0; max-width:540px; opacity:.84;
+  font-size:clamp(14px,3.8vw,18px); line-height:1.55; color:var(--wam-cream);
+}
+
+.wam-enter{
+  position:relative; margin-top:36px; display:inline-flex; align-items:center; gap:10px;
+  padding:17px 46px; border:none; border-radius:999px; cursor:pointer;
+  font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.015em;
+  font-size:clamp(16px,4.2vw,19px); color:#1C1915;
+  background:linear-gradient(180deg,#F8D89D 0%,#E3B063 100%);
+  opacity:0; transform:scale(.92); will-change:transform,opacity,box-shadow;
+  box-shadow:0 12px 40px rgba(242,184,102,.35);
+}
+.wam-enter svg{ width:18px; height:18px; }
+#wam-intro.wam-play .wam-enter{ animation:wamEnterIn .8s ease-out 7.0s forwards, wamEnterPulse 2.6s ease-in-out 8.0s infinite; }
+@keyframes wamEnterIn{ to{ opacity:1; transform:scale(1); } }
+@keyframes wamEnterPulse{
+  0%,100%{ box-shadow:0 12px 40px rgba(242,184,102,.35), 0 0 0 0 rgba(242,184,102,.45); }
+  70%{ box-shadow:0 12px 40px rgba(242,184,102,.30), 0 0 0 24px rgba(242,184,102,0); }
+}
+.wam-enter:hover{ transform:scale(1.03); }
+.wam-enter:active{ transform:scale(.97); }
+
+/* skip */
+.wam-skip{
+  position:absolute; z-index:6; top:calc(env(safe-area-inset-top,0px) + 16px); right:16px;
+  padding:9px 16px; border-radius:999px; cursor:pointer;
+  background:rgba(255,255,255,.06); border:1px solid rgba(244,237,226,.2); color:var(--wam-cream);
+  font:600 13px/1 'Inter',sans-serif; letter-spacing:.04em; opacity:0;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  animation:wamFade .6s ease 1.4s forwards;
+}
+@keyframes wamFade{ to{ opacity:.7; } }
+.wam-skip:hover{ opacity:1; }
+
+/* exit — warm bloom then dissolve */
+#wam-intro.wam-exit{ animation:wamExit 1.15s ease forwards; }
+@keyframes wamExit{
+  0%{ opacity:1; transform:scale(1); filter:brightness(1); }
+  24%{ opacity:1; filter:brightness(1.9) saturate(1.25); }
+  100%{ opacity:0; transform:scale(1.08); filter:brightness(1); }
+}
+#wam-intro.wam-exit .wam-glow{ animation:wamGlowBurst .9s ease-out forwards !important; }
+@keyframes wamGlowBurst{ to{ transform:translate(-50%,-50%) scale(2.7); opacity:1; } }
+
+/* ===================== TOP BAR ===================== */
+#wam-topbar{
+  position:fixed; top:0; left:0; right:0; z-index:9000;
+  min-height:var(--wam-bar-h);
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:0 16px; padding-top:env(safe-area-inset-top,0px);
+  background:rgba(20,15,11,.72);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid rgba(201,163,94,.22);
+  transform:translateY(-110%); transition:transform .6s cubic-bezier(.22,.61,.36,1);
+  font-family:'Inter',system-ui,sans-serif;
+}
+#wam-topbar.wam-show{ transform:translateY(0); }
+.wam-brand{
+  font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.01em;
+  font-size:clamp(14px,4vw,17px); color:var(--wam-cream);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.wam-brand b{ color:var(--wam-brass); font-weight:700; }
+.wam-actions{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.wam-btn{
+  display:inline-flex; align-items:center; gap:7px; border-radius:999px;
+  font:600 13px/1 'Inter',sans-serif; cursor:pointer; text-decoration:none;
+  padding:10px 15px; border:1px solid transparent; white-space:nowrap;
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+}
+.wam-btn:active{ transform:scale(.95); }
+.wam-btn--primary{ color:#1C1915; background:linear-gradient(180deg,#F8D89D,#E3B063); box-shadow:0 6px 18px rgba(242,184,102,.3); }
+.wam-btn--primary:hover{ box-shadow:0 9px 26px rgba(242,184,102,.45); }
+.wam-btn--ghost{ color:var(--wam-cream); background:rgba(255,255,255,.06); border-color:rgba(244,237,226,.18); }
+.wam-btn--ghost:hover{ background:rgba(255,255,255,.12); }
+.wam-btn svg{ flex-shrink:0; }
+
+/* push board below the fixed bar once entered */
+html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--wam-bar-h) + env(safe-area-inset-top,0px)); }
+
+@media (max-width:520px){
+  .wam-btn--ghost .wam-btn-txt{ display:none; }   /* replay → icon only */
+  .wam-btn{ padding:10px 13px; }
+}
+
+/* ===================== REDUCED MOTION ===================== */
+@media (prefers-reduced-motion:reduce){
+  #wam-intro .wam-word{ display:none; }
+  #wam-intro .wam-ember{ display:none; }
+  #wam-intro .wam-glow{ opacity:.9 !important; transform:translate(-50%,-50%) scale(1) !important; animation:none !important; }
+  #wam-intro .wam-mtn{ opacity:1 !important; transform:none !important; animation:none !important; }
+  #wam-intro .wam-lockup{ opacity:1 !important; transform:none !important; animation:none !important; }
+  #wam-intro .wam-enter{ opacity:1 !important; transform:none !important; animation:none !important; }
+  #wam-intro .wam-title{ animation:none !important; }
+  #wam-intro.wam-exit{ animation:none !important; opacity:0; transition:opacity .35s ease; }
+}
