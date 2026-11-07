@@ -1,32 +1,32 @@
-<!-- ===================== IMMERSIVE INTRO ===================== -->
+<!-- ===================== CINEMATIC INTRO ===================== -->
 <div id="wam-intro" role="dialog" aria-label="Warm Alpine Modern — intro experience">
-  <div class="wam-glow" aria-hidden="true"></div>
+
+  <!-- fly-through of the real renders (backgrounds wired up at runtime) -->
+  <div class="wam-scenes" aria-hidden="true">
+    <div class="wam-scene" data-img="87d52af9-01de-443c-b71e-043e1cbcb038"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="efebd6bf-a03f-404c-b166-da2c0eda4573"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="6f0de1ec-dc45-4d15-9559-28ec9a27957d"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="42f76987-24b9-4cc9-9ba7-ad7c70cdbd81"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="51c34cd5-58ef-4968-844d-805ae66b86a6"><div class="wam-scene__img"></div></div>
+  </div>
+
+  <div class="wam-tint" aria-hidden="true"></div>
+  <div class="wam-scrim" aria-hidden="true"></div>
+  <div class="wam-flash" aria-hidden="true"></div>
   <div class="wam-embers" aria-hidden="true"></div>
 
-  <svg class="wam-mtn" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="wamRim" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#C9A35E" stop-opacity=".55"/>
-        <stop offset="0.12" stop-color="#7a5531" stop-opacity=".3"/>
-        <stop offset="0.5" stop-color="#2a1f16" stop-opacity="1"/>
-        <stop offset="1" stop-color="#211812" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="wamMid" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#3a2a1b" stop-opacity=".6"/>
-        <stop offset="0.3" stop-color="#1f1711" stop-opacity="1"/>
-      </linearGradient>
-    </defs>
-    <path fill="url(#wamRim)" d="M0,520 L0,300 L180,188 L360,262 L560,120 L760,250 L980,150 L1200,262 L1440,168 L1440,520 Z"/>
-    <path fill="url(#wamMid)" d="M0,520 L0,360 L220,252 L470,360 L700,232 L960,360 L1200,270 L1440,350 L1440,520 Z"/>
-    <path fill="#140e09"       d="M0,520 L0,422 L260,342 L520,430 L820,332 L1120,430 L1440,360 L1440,520 Z"/>
-  </svg>
+  <!-- per-scene caption -->
+  <div class="wam-cap" aria-hidden="true">
+    <p class="wam-cap__word"></p>
+    <p class="wam-cap__sub"></p>
+  </div>
 
-  <div class="wam-vignette" aria-hidden="true"></div>
+  <!-- progress -->
+  <div class="wam-dots" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
 
-  <div class="wam-word wam-word--1" aria-hidden="true">Warm.</div>
-  <div class="wam-word wam-word--2" aria-hidden="true">Alpine.</div>
-  <div class="wam-word wam-word--3" aria-hidden="true">Modern.</div>
-
+  <!-- final lockup -->
   <div class="wam-stage">
     <div class="wam-lockup">
       <p class="wam-eyebrow">House mood board</p>

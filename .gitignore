@@ -1,5 +1,7 @@
 node_modules/
 package-lock.json
 shot-*.png
+fly-*.png
 pdf-preview.png
 verify.js
+v2.js

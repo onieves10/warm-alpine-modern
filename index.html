@@ -68,8 +68,8 @@ img{max-width:100%}
 </style>
 <style id="wam-style">
 /* ============================================================
-   Warm Alpine Modern — immersive intro + top bar
-   Mobile-first. Palette pulled from the mood board itself.
+   Warm Alpine Modern — cinematic fly-through intro + top bar
+   Mobile-first. Palette + renders pulled from the mood board.
    ============================================================ */
 :root{
   --wam-bg:#120d09;
@@ -78,211 +78,203 @@ img{max-width:100%}
   --wam-brass:#C9A35E;
   --wam-amber:#F2B866;
   --wam-amber-deep:#A8803F;
-  --wam-olive:#535B37;
-  --wam-cognac:#9A4F26;
-  --wam-teal:#1F4E5F;
   --wam-bar-h:56px;
+  --wam-scene-ms:3s;
 }
 
-/* lock scroll while the intro is on screen */
 html.wam-intro-active, html.wam-intro-active body{ overflow:hidden !important; height:100%; }
 
 /* ===================== INTRO OVERLAY ===================== */
 #wam-intro{
   position:fixed; inset:0; z-index:99999;
   display:flex; align-items:center; justify-content:center;
-  background:
-    radial-gradient(120% 90% at 50% 120%, #2a1a0e 0%, #140d08 55%, #0c0806 100%);
-  color:var(--wam-cream);
-  overflow:hidden;
+  background:#0c0806; color:var(--wam-cream); overflow:hidden;
   font-family:'Inter',system-ui,-apple-system,sans-serif;
   -webkit-tap-highlight-color:transparent;
-  height:100vh; height:100dvh;
-  cursor:default;
-  isolation:isolate;
+  height:100vh; height:100dvh; cursor:default; isolation:isolate;
 }
 #wam-intro.wam-ready{ cursor:pointer; }
 
-/* warm firelight / sunrise glow */
-.wam-glow{
-  position:absolute; left:50%; top:64%;
-  width:135vmax; height:135vmax;
-  transform:translate(-50%,-50%) scale(.18);
-  background:radial-gradient(circle at center,
-      rgba(242,184,102,.60) 0%,
-      rgba(201,143,60,.38) 20%,
-      rgba(154,79,38,.20) 40%,
-      rgba(20,13,9,0) 66%);
-  opacity:0; filter:blur(2px); z-index:1; will-change:transform,opacity;
+/* ---- the fly-through scenes (real renders) ---- */
+.wam-scenes{ position:absolute; inset:0; z-index:1; overflow:hidden; background:#0c0806; }
+.wam-scene{ position:absolute; inset:0; opacity:0; transition:opacity 1.25s ease; will-change:opacity; }
+.wam-scene.is-active{ opacity:1; }
+.wam-scene__img{
+  position:absolute; inset:-7%;
+  background-size:cover; background-position:center;
+  transform:scale(1.14); will-change:transform;
 }
-#wam-intro.wam-play .wam-glow{
-  animation:wamGlowIn 2.6s ease-out forwards, wamGlowPulse 6.5s ease-in-out 2.6s infinite;
-}
-@keyframes wamGlowIn{ from{opacity:0;transform:translate(-50%,-50%) scale(.18);} to{opacity:1;transform:translate(-50%,-50%) scale(1);} }
-@keyframes wamGlowPulse{ 0%,100%{opacity:.92;transform:translate(-50%,-50%) scale(1);} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.06);} }
+/* Ken-Burns camera moves — one per scene, kept moving through the dissolve */
+.wam-scene.is-active:nth-child(1) .wam-scene__img{ animation:wamKB1 5.2s ease-out both; }
+.wam-scene.is-active:nth-child(2) .wam-scene__img{ animation:wamKB2 5.2s ease-out both; }
+.wam-scene.is-active:nth-child(3) .wam-scene__img{ animation:wamKB3 5.2s ease-out both; }
+.wam-scene.is-active:nth-child(4) .wam-scene__img{ animation:wamKB4 5.2s ease-out both; }
+.wam-scene.is-active:nth-child(5) .wam-scene__img{ animation:wamKB5 5.2s ease-out both; }
+@keyframes wamKB1{ from{transform:scale(1.12) translate(0,0);}      to{transform:scale(1.34) translate(-3%,-2.5%);} }
+@keyframes wamKB2{ from{transform:scale(1.34) translate(3%,1%);}    to{transform:scale(1.12) translate(-2%,-1%);} }
+@keyframes wamKB3{ from{transform:scale(1.14) translate(-1%,2.5%);} to{transform:scale(1.32) translate(3%,-2%);} }
+@keyframes wamKB4{ from{transform:scale(1.3)  translate(-3%,-1%);}  to{transform:scale(1.14) translate(2.5%,2.5%);} }
+@keyframes wamKB5{ from{transform:scale(1.12) translate(0,1%);}     to{transform:scale(1.36) translate(0,-3.5%);} }
 
-/* rising embers */
-.wam-embers{ position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
-.wam-ember{
-  position:absolute; bottom:-12px; width:5px; height:5px; border-radius:50%;
+/* ---- scrims + warm cinematic grade ---- */
+.wam-scrim{ position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(14,9,6,.55) 0%, rgba(14,9,6,0) 24%, rgba(14,9,6,0) 52%, rgba(14,9,6,.82) 100%),
+    radial-gradient(125% 95% at 50% 46%, rgba(0,0,0,0) 38%, rgba(0,0,0,.52) 100%);
+  transition:background 1.2s ease;
+}
+.wam-tint{ position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:soft-light;
+  background:linear-gradient(170deg, rgba(242,184,102,.28), rgba(154,79,38,.34)); }
+
+/* ---- light-leak bloom on each cut ---- */
+.wam-flash{ position:absolute; inset:0; z-index:3; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 56%, rgba(255,239,206,.95), rgba(242,184,102,.45) 38%, rgba(242,184,102,0) 70%); }
+.wam-flash.is-bloom{ animation:wamBloom 1.15s ease-out; }
+@keyframes wamBloom{ 0%{opacity:0;} 22%{opacity:.8;} 100%{opacity:0;} }
+
+/* ---- rising embers (atmosphere, over the scenes) ---- */
+.wam-embers{ position:absolute; inset:0; z-index:4; pointer-events:none; overflow:hidden; }
+.wam-ember{ position:absolute; bottom:-12px; width:5px; height:5px; border-radius:50%;
   background:radial-gradient(circle,#FCE7BA 0%,#EBA64E 55%,rgba(235,166,78,0) 72%);
   opacity:0; transform:scale(var(--s,1)); filter:blur(.3px);
-  animation:wamEmber var(--d,9s) linear var(--delay,0s) infinite;
-}
+  animation:wamEmber var(--d,9s) linear var(--delay,0s) infinite; }
 @keyframes wamEmber{
-  0%{ opacity:0; transform:translate(0,0) scale(var(--s)); }
-  12%{ opacity:.85; }
-  85%{ opacity:.35; }
-  100%{ opacity:0; transform:translate(var(--x,0), -92vh) scale(var(--s)); }
+  0%{opacity:0; transform:translate(0,0) scale(var(--s));}
+  12%{opacity:.85;} 85%{opacity:.35;}
+  100%{opacity:0; transform:translate(var(--x,0), -92vh) scale(var(--s));}
 }
 
-/* alpine ridge silhouette */
-.wam-mtn{
-  position:absolute; left:0; right:0; bottom:0; width:100%; height:46vh;
-  z-index:2; transform:translateY(103%); opacity:0; will-change:transform;
+/* ---- per-scene captions (big mood word + line) ---- */
+.wam-cap{ position:absolute; z-index:5; left:0; right:0; bottom:17%; padding:0 28px;
+  text-align:center; pointer-events:none; opacity:0; }
+.wam-cap.is-in{ animation:wamCapCycle var(--wam-scene-ms) ease both; }
+@keyframes wamCapCycle{
+  0%{opacity:0; transform:translateY(26px);}
+  15%{opacity:1; transform:translateY(0);}
+  82%{opacity:1; transform:translateY(0);}
+  100%{opacity:0; transform:translateY(-14px);}
 }
-#wam-intro.wam-play .wam-mtn{ animation:wamMtnRise 1.9s cubic-bezier(.22,.61,.36,1) 4.3s forwards; }
-@keyframes wamMtnRise{ to{ transform:translateY(0); opacity:1; } }
+.wam-cap__word{ margin:0; font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:-.02em;
+  line-height:1; font-size:clamp(54px,15vw,124px); color:var(--wam-cream);
+  text-shadow:0 6px 44px rgba(0,0,0,.6), 0 0 64px rgba(242,184,102,.25); }
+.wam-cap.is-in .wam-cap__word{ animation:wamCapBlur 1s ease both; }
+@keyframes wamCapBlur{ from{filter:blur(13px);} to{filter:blur(0);} }
+.wam-cap__sub{ margin:16px 0 0; font-size:clamp(12px,3.4vw,16px); font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--wam-brass);
+  text-shadow:0 2px 18px rgba(0,0,0,.8); }
 
-/* cinematic vignette */
-.wam-vignette{
-  position:absolute; inset:0; z-index:3; pointer-events:none;
-  background:radial-gradient(130% 105% at 50% 42%, rgba(0,0,0,0) 44%, rgba(0,0,0,.6) 100%);
-}
+/* ---- final title lockup + enter (outro) ---- */
+.wam-stage{ position:relative; z-index:6; width:100%; max-width:860px; padding:0 26px; text-align:center;
+  opacity:0; pointer-events:none; transition:opacity .6s ease; }
+#wam-intro.wam-outro .wam-stage{ opacity:1; pointer-events:auto; }
+.wam-stage::before{ content:''; position:absolute; left:50%; top:50%;
+  width:150vmax; height:150vmax; border-radius:50%; transform:translate(-50%,-50%) scale(.35);
+  background:radial-gradient(circle, rgba(242,184,102,.42), rgba(154,79,38,.16) 40%, rgba(0,0,0,0) 68%);
+  opacity:0; z-index:-1; pointer-events:none; }
+#wam-intro.wam-outro .wam-stage::before{ animation:wamGlowIn 1.8s ease-out forwards, wamGlowPulse 6.5s ease-in-out 1.8s infinite; }
+@keyframes wamGlowIn{ to{opacity:1; transform:translate(-50%,-50%) scale(1);} }
+@keyframes wamGlowPulse{ 0%,100%{opacity:.9;transform:translate(-50%,-50%) scale(1);} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.06);} }
 
-/* the staggered mood words */
-.wam-word{
-  position:absolute; inset:0; z-index:4;
-  display:flex; align-items:center; justify-content:center; text-align:center;
-  padding:0 24px; pointer-events:none; opacity:0;
-  font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:-.02em;
-  line-height:1; font-size:clamp(58px,17vw,150px);
-  color:var(--wam-cream); text-shadow:0 0 60px rgba(242,184,102,.4);
-}
-#wam-intro.wam-play .wam-word--1{ animation:wamWord 2.0s ease-out .6s both; }
-#wam-intro.wam-play .wam-word--2{ animation:wamWord 2.0s ease-out 2.3s both; }
-#wam-intro.wam-play .wam-word--3{ animation:wamWord 2.0s ease-out 4.0s both; }
-@keyframes wamWord{
-  0%{ opacity:0; transform:translateY(28px); filter:blur(14px); letter-spacing:.09em; }
-  22%{ opacity:1; transform:translateY(0); filter:blur(0); letter-spacing:-.02em; }
-  72%{ opacity:1; transform:translateY(0); filter:blur(0); }
-  100%{ opacity:0; transform:translateY(-24px); filter:blur(9px); }
-}
-
-/* final title lockup + enter */
-.wam-stage{ position:relative; z-index:5; width:100%; max-width:860px; padding:0 26px; text-align:center; }
 .wam-lockup{ opacity:0; transform:translateY(22px); }
-#wam-intro.wam-play .wam-lockup{ animation:wamLockIn 1.5s ease-out 6.0s forwards; }
-@keyframes wamLockIn{ to{ opacity:1; transform:translateY(0); } }
+#wam-intro.wam-outro .wam-lockup{ animation:wamLockIn 1.5s ease-out .2s forwards; }
+@keyframes wamLockIn{ to{opacity:1; transform:translateY(0);} }
+#wam-intro.wam-outro .wam-cap{ opacity:0 !important; animation:none !important; }
+#wam-intro.wam-outro .wam-scrim{ background:linear-gradient(180deg, rgba(10,7,4,.74), rgba(10,7,4,.86)); }
 
-.wam-eyebrow{
-  margin:0 0 16px; font-size:clamp(11px,3.2vw,13px); font-weight:600;
-  letter-spacing:.24em; text-transform:uppercase; color:var(--wam-brass);
-}
-.wam-title{
-  margin:0; font-family:'Urbanist','Inter',sans-serif; font-weight:700;
+.wam-eyebrow{ margin:0 0 16px; font-size:clamp(11px,3.2vw,13px); font-weight:600;
+  letter-spacing:.24em; text-transform:uppercase; color:var(--wam-brass); }
+.wam-title{ margin:0; font-family:'Urbanist','Inter',sans-serif; font-weight:700;
   letter-spacing:-.03em; line-height:.98; font-size:clamp(46px,13vw,108px);
   background:linear-gradient(100deg,#F4EDE2 0%,#F4EDE2 40%,#FFF6E2 50%,#F4EDE2 60%,#F4EDE2 100%);
   background-size:230% 100%; background-position:160% 0;
-  -webkit-background-clip:text; background-clip:text;
-  color:transparent; -webkit-text-fill-color:transparent;
-}
-#wam-intro.wam-play .wam-title{ animation:wamSheen 2.8s ease-in-out 7.2s both; }
+  -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
+#wam-intro.wam-outro .wam-title{ animation:wamSheen 2.8s ease-in-out 1.1s both; }
 @keyframes wamSheen{ from{background-position:160% 0;} to{background-position:-70% 0;} }
+.wam-sub{ margin:20px auto 0; max-width:540px; opacity:.85;
+  font-size:clamp(14px,3.8vw,18px); line-height:1.55; color:var(--wam-cream); }
 
-.wam-sub{
-  margin:20px auto 0; max-width:540px; opacity:.84;
-  font-size:clamp(14px,3.8vw,18px); line-height:1.55; color:var(--wam-cream);
-}
-
-.wam-enter{
-  position:relative; margin-top:36px; display:inline-flex; align-items:center; gap:10px;
+.wam-enter{ position:relative; margin-top:36px; display:inline-flex; align-items:center; gap:10px;
   padding:17px 46px; border:none; border-radius:999px; cursor:pointer;
   font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.015em;
   font-size:clamp(16px,4.2vw,19px); color:#1C1915;
   background:linear-gradient(180deg,#F8D89D 0%,#E3B063 100%);
   opacity:0; transform:scale(.92); will-change:transform,opacity,box-shadow;
-  box-shadow:0 12px 40px rgba(242,184,102,.35);
-}
+  box-shadow:0 12px 40px rgba(242,184,102,.35); }
 .wam-enter svg{ width:18px; height:18px; }
-#wam-intro.wam-play .wam-enter{ animation:wamEnterIn .8s ease-out 7.0s forwards, wamEnterPulse 2.6s ease-in-out 8.0s infinite; }
-@keyframes wamEnterIn{ to{ opacity:1; transform:scale(1); } }
+#wam-intro.wam-outro .wam-enter{ animation:wamEnterIn .8s ease-out 1.0s forwards, wamEnterPulse 2.6s ease-in-out 2.0s infinite; }
+@keyframes wamEnterIn{ to{opacity:1; transform:scale(1);} }
 @keyframes wamEnterPulse{
   0%,100%{ box-shadow:0 12px 40px rgba(242,184,102,.35), 0 0 0 0 rgba(242,184,102,.45); }
   70%{ box-shadow:0 12px 40px rgba(242,184,102,.30), 0 0 0 24px rgba(242,184,102,0); }
 }
-.wam-enter:hover{ transform:scale(1.03); }
-.wam-enter:active{ transform:scale(.97); }
+.wam-enter:hover{ transform:scale(1.03); } .wam-enter:active{ transform:scale(.97); }
 
-/* skip */
-.wam-skip{
-  position:absolute; z-index:6; top:calc(env(safe-area-inset-top,0px) + 16px); right:16px;
+/* ---- progress dots ---- */
+.wam-dots{ position:absolute; z-index:5; left:0; right:0; bottom:calc(env(safe-area-inset-bottom,0px) + 22px);
+  display:flex; gap:8px; justify-content:center; pointer-events:none; transition:opacity .5s ease; }
+.wam-dots span{ width:6px; height:6px; border-radius:50%; background:rgba(244,237,226,.3); transition:all .4s ease; }
+.wam-dots span.is-on{ background:var(--wam-amber); width:20px; border-radius:3px; }
+#wam-intro.wam-outro .wam-dots{ opacity:0; }
+
+/* ---- skip ---- */
+.wam-skip{ position:absolute; z-index:7; top:calc(env(safe-area-inset-top,0px) + 16px); right:16px;
   padding:9px 16px; border-radius:999px; cursor:pointer;
-  background:rgba(255,255,255,.06); border:1px solid rgba(244,237,226,.2); color:var(--wam-cream);
+  background:rgba(0,0,0,.32); border:1px solid rgba(244,237,226,.25); color:var(--wam-cream);
   font:600 13px/1 'Inter',sans-serif; letter-spacing:.04em; opacity:0;
   -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
-  animation:wamFade .6s ease 1.4s forwards;
-}
-@keyframes wamFade{ to{ opacity:.7; } }
+  animation:wamFade .6s ease 1.2s forwards; }
+@keyframes wamFade{ to{opacity:.8;} }
 .wam-skip:hover{ opacity:1; }
 
-/* exit — warm bloom then dissolve */
+/* ---- exit: warm bloom then dissolve to the board ---- */
 #wam-intro.wam-exit{ animation:wamExit 1.15s ease forwards; }
 @keyframes wamExit{
-  0%{ opacity:1; transform:scale(1); filter:brightness(1); }
-  24%{ opacity:1; filter:brightness(1.9) saturate(1.25); }
-  100%{ opacity:0; transform:scale(1.08); filter:brightness(1); }
+  0%{opacity:1; transform:scale(1); filter:brightness(1);}
+  24%{opacity:1; filter:brightness(1.85) saturate(1.2);}
+  100%{opacity:0; transform:scale(1.07); filter:brightness(1);}
 }
-#wam-intro.wam-exit .wam-glow{ animation:wamGlowBurst .9s ease-out forwards !important; }
-@keyframes wamGlowBurst{ to{ transform:translate(-50%,-50%) scale(2.7); opacity:1; } }
 
 /* ===================== TOP BAR ===================== */
 #wam-topbar{
-  position:fixed; top:0; left:0; right:0; z-index:9000;
-  min-height:var(--wam-bar-h);
+  position:fixed; top:0; left:0; right:0; z-index:9000; min-height:var(--wam-bar-h);
   display:flex; align-items:center; justify-content:space-between; gap:12px;
   padding:0 16px; padding-top:env(safe-area-inset-top,0px);
   background:rgba(20,15,11,.72);
   -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4);
   border-bottom:1px solid rgba(201,163,94,.22);
   transform:translateY(-110%); transition:transform .6s cubic-bezier(.22,.61,.36,1);
-  font-family:'Inter',system-ui,sans-serif;
-}
+  font-family:'Inter',system-ui,sans-serif; }
 #wam-topbar.wam-show{ transform:translateY(0); }
-.wam-brand{
-  font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.01em;
+.wam-brand{ font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.01em;
   font-size:clamp(14px,4vw,17px); color:var(--wam-cream);
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.wam-brand b{ color:var(--wam-brass); font-weight:700; }
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.wam-brand b{ color:var(--wam-brass); }
 .wam-actions{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
-.wam-btn{
-  display:inline-flex; align-items:center; gap:7px; border-radius:999px;
+.wam-btn{ display:inline-flex; align-items:center; gap:7px; border-radius:999px;
   font:600 13px/1 'Inter',sans-serif; cursor:pointer; text-decoration:none;
   padding:10px 15px; border:1px solid transparent; white-space:nowrap;
-  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
-}
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease; }
 .wam-btn:active{ transform:scale(.95); }
 .wam-btn--primary{ color:#1C1915; background:linear-gradient(180deg,#F8D89D,#E3B063); box-shadow:0 6px 18px rgba(242,184,102,.3); }
 .wam-btn--primary:hover{ box-shadow:0 9px 26px rgba(242,184,102,.45); }
 .wam-btn--ghost{ color:var(--wam-cream); background:rgba(255,255,255,.06); border-color:rgba(244,237,226,.18); }
 .wam-btn--ghost:hover{ background:rgba(255,255,255,.12); }
-.wam-btn svg{ flex-shrink:0; }
 
-/* push board below the fixed bar once entered */
 html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--wam-bar-h) + env(safe-area-inset-top,0px)); }
 
 @media (max-width:520px){
-  .wam-btn--ghost .wam-btn-txt{ display:none; }   /* replay → icon only */
+  .wam-btn--ghost .wam-btn-txt{ display:none; }
   .wam-btn{ padding:10px 13px; }
 }
 
 /* ===================== REDUCED MOTION ===================== */
 @media (prefers-reduced-motion:reduce){
-  #wam-intro .wam-word{ display:none; }
-  #wam-intro .wam-ember{ display:none; }
-  #wam-intro .wam-glow{ opacity:.9 !important; transform:translate(-50%,-50%) scale(1) !important; animation:none !important; }
-  #wam-intro .wam-mtn{ opacity:1 !important; transform:none !important; animation:none !important; }
+  .wam-scene__img{ animation:none !important; transform:scale(1.05) !important; }
+  .wam-scene{ transition:opacity .4s ease; }
+  .wam-ember{ display:none; }
+  .wam-flash{ display:none; }
+  .wam-cap{ display:none; }
+  #wam-intro .wam-stage{ opacity:1; }
   #wam-intro .wam-lockup{ opacity:1 !important; transform:none !important; animation:none !important; }
   #wam-intro .wam-enter{ opacity:1 !important; transform:none !important; animation:none !important; }
   #wam-intro .wam-title{ animation:none !important; }
@@ -292,35 +284,35 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
 </style>
 </head>
 <body>
-<!-- ===================== IMMERSIVE INTRO ===================== -->
+<!-- ===================== CINEMATIC INTRO ===================== -->
 <div id="wam-intro" role="dialog" aria-label="Warm Alpine Modern — intro experience">
-  <div class="wam-glow" aria-hidden="true"></div>
+
+  <!-- fly-through of the real renders (backgrounds wired up at runtime) -->
+  <div class="wam-scenes" aria-hidden="true">
+    <div class="wam-scene" data-img="87d52af9-01de-443c-b71e-043e1cbcb038"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="efebd6bf-a03f-404c-b166-da2c0eda4573"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="6f0de1ec-dc45-4d15-9559-28ec9a27957d"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="42f76987-24b9-4cc9-9ba7-ad7c70cdbd81"><div class="wam-scene__img"></div></div>
+    <div class="wam-scene" data-img="51c34cd5-58ef-4968-844d-805ae66b86a6"><div class="wam-scene__img"></div></div>
+  </div>
+
+  <div class="wam-tint" aria-hidden="true"></div>
+  <div class="wam-scrim" aria-hidden="true"></div>
+  <div class="wam-flash" aria-hidden="true"></div>
   <div class="wam-embers" aria-hidden="true"></div>
 
-  <svg class="wam-mtn" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="wamRim" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#C9A35E" stop-opacity=".55"/>
-        <stop offset="0.12" stop-color="#7a5531" stop-opacity=".3"/>
-        <stop offset="0.5" stop-color="#2a1f16" stop-opacity="1"/>
-        <stop offset="1" stop-color="#211812" stop-opacity="1"/>
-      </linearGradient>
-      <linearGradient id="wamMid" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#3a2a1b" stop-opacity=".6"/>
-        <stop offset="0.3" stop-color="#1f1711" stop-opacity="1"/>
-      </linearGradient>
-    </defs>
-    <path fill="url(#wamRim)" d="M0,520 L0,300 L180,188 L360,262 L560,120 L760,250 L980,150 L1200,262 L1440,168 L1440,520 Z"/>
-    <path fill="url(#wamMid)" d="M0,520 L0,360 L220,252 L470,360 L700,232 L960,360 L1200,270 L1440,350 L1440,520 Z"/>
-    <path fill="#140e09"       d="M0,520 L0,422 L260,342 L520,430 L820,332 L1120,430 L1440,360 L1440,520 Z"/>
-  </svg>
+  <!-- per-scene caption -->
+  <div class="wam-cap" aria-hidden="true">
+    <p class="wam-cap__word"></p>
+    <p class="wam-cap__sub"></p>
+  </div>
 
-  <div class="wam-vignette" aria-hidden="true"></div>
+  <!-- progress -->
+  <div class="wam-dots" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
 
-  <div class="wam-word wam-word--1" aria-hidden="true">Warm.</div>
-  <div class="wam-word wam-word--2" aria-hidden="true">Alpine.</div>
-  <div class="wam-word wam-word--3" aria-hidden="true">Modern.</div>
-
+  <!-- final lockup -->
   <div class="wam-stage">
     <div class="wam-lockup">
       <p class="wam-eyebrow">House mood board</p>
@@ -546,26 +538,41 @@ document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttr
 </script>
 <script id="wam-script">
 (function () {
-  var intro   = document.getElementById('wam-intro');
-  var topbar  = document.getElementById('wam-topbar');
-  var enterBtn= document.getElementById('wam-enter');
-  var skipBtn = document.getElementById('wam-skip');
-  var replay  = document.getElementById('wam-replay');
+  var intro  = document.getElementById('wam-intro');
+  var topbar = document.getElementById('wam-topbar');
   if (!intro) return;
+
+  var enterBtn = document.getElementById('wam-enter');
+  var skipBtn  = document.getElementById('wam-skip');
+  var replay   = document.getElementById('wam-replay');
+  var scenes   = [].slice.call(intro.querySelectorAll('.wam-scene'));
+  var cap      = intro.querySelector('.wam-cap');
+  var capWord  = intro.querySelector('.wam-cap__word');
+  var capSub   = intro.querySelector('.wam-cap__sub');
+  var flash    = intro.querySelector('.wam-flash');
+  var dots     = [].slice.call(intro.querySelectorAll('.wam-dots span'));
 
   var root   = document.documentElement;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var READY_MS = 7000;       // when the "Enter" gate becomes active
+  var SCENE_MS = 3000;                 // 5 scenes x 3s = 15s fly-through
   var EXIT_MS  = reduce ? 360 : 1150;
-  var readyTimer = null;
+  var timers = [];
+
+  // captions straight from the mood board's own copy
+  var CAPTIONS = [
+    { word: 'Warm.',      sub: 'The living room, at dusk' },
+    { word: 'Sleek.',     sub: 'Whites & marble · brass warmth' },
+    { word: 'Collected.', sub: 'A lit wood bookshelf wall' },
+    { word: 'Glowing.',   sub: 'Movie nights · a glowing back bar' },
+    { word: 'Alpine.',    sub: 'Lodge warmth, modernized' }
+  ];
 
   root.classList.add('wam-intro-active');
 
-  // --- atmospheric embers ---
-  (function embers() {
+  // embers
+  (function () {
     if (reduce) return;
     var box = intro.querySelector('.wam-embers');
-    if (!box) return;
     for (var i = 0; i < 16; i++) {
       var e = document.createElement('span');
       e.className = 'wam-ember';
@@ -578,19 +585,59 @@ document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttr
     }
   })();
 
-  function startTimeline() {
-    intro.classList.remove('wam-exit', 'wam-ready', 'wam-play');
-    void intro.offsetWidth;                 // force reflow so re-adding replays
-    requestAnimationFrame(function () {
-      intro.classList.add('wam-play');
-      clearTimeout(readyTimer);
-      readyTimer = setTimeout(function () { intro.classList.add('wam-ready'); },
-                              reduce ? 0 : READY_MS);
+  // wire each scene's background to the matching render already in the board
+  function loadBackgrounds() {
+    var map = {};
+    document.querySelectorAll('img[data-img]').forEach(function (im) {
+      var src = im.currentSrc || im.src;
+      if (src) map[im.getAttribute('data-img')] = src;
     });
+    var missing = 0;
+    scenes.forEach(function (s) {
+      var id = s.getAttribute('data-img');
+      var layer = s.querySelector('.wam-scene__img');
+      if (map[id]) layer.style.backgroundImage = 'url("' + map[id] + '")';
+      else missing++;
+    });
+    return missing;
+  }
+
+  function activate(i) {
+    scenes.forEach(function (s, idx) { s.classList.toggle('is-active', idx === i); });
+    dots.forEach(function (d, idx) { d.classList.toggle('is-on', idx === i); });
+    if (flash) { flash.classList.remove('is-bloom'); void flash.offsetWidth; flash.classList.add('is-bloom'); }
+    capWord.textContent = CAPTIONS[i].word;
+    capSub.textContent  = CAPTIONS[i].sub;
+    cap.classList.remove('is-in'); void cap.offsetWidth; cap.classList.add('is-in');
+  }
+
+  function outro() {
+    intro.classList.add('wam-outro', 'wam-ready');
+  }
+
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  function startTimeline() {
+    clearTimers();
+    intro.classList.remove('wam-exit', 'wam-ready', 'wam-outro');
+    scenes.forEach(function (s) { s.classList.remove('is-active'); });
+    cap.classList.remove('is-in');
+    void intro.offsetWidth;
+
+    if (loadBackgrounds() > 0) setTimeout(loadBackgrounds, 250); // retry if board images not yet assigned
+
+    if (reduce) { scenes[0].classList.add('is-active'); outro(); return; }
+
+    activate(0);
+    for (var i = 1; i < scenes.length; i++) {
+      (function (idx) { timers.push(setTimeout(function () { activate(idx); }, idx * SCENE_MS)); })(i);
+    }
+    timers.push(setTimeout(outro, scenes.length * SCENE_MS));
   }
 
   function enter() {
     if (intro.classList.contains('wam-exit')) return;
+    clearTimers();
     intro.classList.add('wam-exit');
     topbar.setAttribute('aria-hidden', 'false');
     root.classList.add('wam-entered');
@@ -614,9 +661,9 @@ document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttr
 
   enterBtn && enterBtn.addEventListener('click', function (e) { e.stopPropagation(); enter(); });
   replay   && replay.addEventListener('click',  function (e) { e.stopPropagation(); replayIntro(); });
-  skipBtn  && skipBtn.addEventListener('click',  function (e) { e.stopPropagation(); intro.classList.add('wam-ready'); enter(); });
+  skipBtn  && skipBtn.addEventListener('click',  function (e) { e.stopPropagation(); enter(); });
 
-  // tap anywhere once the sequence has finished
+  // once the sequence reaches the outro, a tap anywhere enters
   intro.addEventListener('click', function (ev) {
     if (!intro.classList.contains('wam-ready')) return;
     if (ev.target.closest('#wam-skip') || ev.target.closest('#wam-enter')) return;
