@@ -8,6 +8,7 @@ css  = (here / "parts" / "intro.css").read_text(encoding="utf-8")
 ov   = (here / "parts" / "intro.html").read_text(encoding="utf-8")
 js   = (here / "parts" / "intro.js").read_text(encoding="utf-8")
 cosmos = (here / "parts" / "cosmos.js").read_text(encoding="utf-8")
+audio  = (here / "parts" / "audio.js").read_text(encoding="utf-8")
 THREE_CDN = "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"
 
 # 1) inject styles just before </head>
@@ -26,6 +27,7 @@ if "</body>" not in src:
 tail = (
     "<script src=\"" + THREE_CDN + "\"></script>\n"
     "<script id=\"wam-cosmos\">\n" + cosmos + "\n</script>\n"
+    "<script id=\"wam-audio-js\">\n" + audio + "\n</script>\n"
     "<script id=\"wam-script\">\n" + js + "\n</script>\n"
     "</body>"
 )

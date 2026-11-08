@@ -62,6 +62,17 @@
   <div class="wam-curtain wam-curtain--r" aria-hidden="true"></div>
 </div>
 
+<!-- ===================== AMBIENT SOUND CONTROL ===================== -->
+<button id="wam-audio" class="wam-audio" type="button" aria-label="Toggle ambient sound" aria-pressed="false">
+  <span class="wam-audio__ic wam-audio__off" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </span>
+  <span class="wam-audio__ic wam-audio__on" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </span>
+</button>
+<div id="wam-audio-hint" class="wam-audio-hint" aria-hidden="true">Tap anywhere for sound</div>
+
 <!-- ===================== TOP BAR ===================== -->
 <header id="wam-topbar" aria-hidden="true">
   <span class="wam-brand">Warm Alpine <b>Modern</b></span>

@@ -280,8 +280,29 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
 .wam-marquee__b{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:clamp(13px,3.6vw,20px);
   color:#f3c27a; text-shadow:0 0 12px rgba(255,190,110,.5); }
 
+/* ===================== AMBIENT SOUND CONTROL ===================== */
+.wam-audio{ position:fixed; z-index:100002; left:16px; bottom:calc(env(safe-area-inset-bottom,0px) + 16px);
+  width:44px; height:44px; border-radius:50%; display:grid; place-items:center; cursor:pointer; padding:0;
+  background:rgba(20,15,11,.6); border:1px solid rgba(201,163,94,.42); color:var(--wam-cream);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); transition:transform .15s ease, background .2s ease; }
+.wam-audio:hover{ background:rgba(20,15,11,.8); }
+.wam-audio:active{ transform:scale(.92); }
+.wam-audio__ic{ grid-area:1/1; display:grid; place-items:center; transition:opacity .25s ease; }
+.wam-audio .wam-audio__on{ opacity:0; } .wam-audio .wam-audio__off{ opacity:1; }
+.wam-audio.is-on .wam-audio__on{ opacity:1; } .wam-audio.is-on .wam-audio__off{ opacity:0; }
+.wam-audio:not(.is-on){ animation:wamAudioPulse 2.6s ease-in-out infinite; }
+@keyframes wamAudioPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(242,184,102,.4); } 65%{ box-shadow:0 0 0 13px rgba(242,184,102,0); } }
+.wam-audio-hint{ position:fixed; z-index:100002; left:70px; bottom:calc(env(safe-area-inset-bottom,0px) + 26px);
+  background:rgba(20,15,11,.62); color:var(--wam-cream); font:600 12px/1 'Inter',sans-serif; letter-spacing:.03em;
+  padding:9px 13px; border-radius:999px; border:1px solid rgba(201,163,94,.32);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); white-space:nowrap; pointer-events:none;
+  opacity:0; animation:wamHintIn .6s ease 1.2s forwards; }
+@keyframes wamHintIn{ to{ opacity:.92; } }
+.wam-audio-hint.is-hidden{ opacity:0 !important; transition:opacity .45s ease; }
+
 /* ===================== REDUCED MOTION ===================== */
 @media (prefers-reduced-motion:reduce){
+  .wam-audio:not(.is-on){ animation:none; }
   #wam-cosmos-canvas{ display:none; }
   .wam-descent{ display:none; } .wam-white{ display:none; } .wam-place{ display:none; }
   .wam-curtain, .wam-valance, .wam-marquee{ transition:none !important; }

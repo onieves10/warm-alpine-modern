@@ -5,9 +5,12 @@ fly-*.png
 c-*.png
 e-*.png
 d-*.png
+audio-*.png
+live-*.png
 palette-top.png
 pdf-preview.png
 verify*.js
+livecheck.js
 v2.js
 vtop.js
 fetch_*.py

@@ -35,6 +35,35 @@
 
   root.classList.add('wam-intro-active');
 
+  // ---------- ambient sound ----------
+  var audioBtn  = document.getElementById('wam-audio');
+  var audioHint = document.getElementById('wam-audio-hint');
+  var hasAudio  = !!window.WAMAudio;
+  function updateAudioUI() { if (audioBtn && hasAudio) { var on = WAMAudio.isOn(); audioBtn.classList.toggle('is-on', on); audioBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); } }
+  function hideHint() { if (audioHint) audioHint.classList.add('is-hidden'); }
+  function audioOn() { if (!hasAudio) return; WAMAudio.start(); try { sessionStorage.setItem('wam-audio', 'on'); } catch (e) {} updateAudioUI(); hideHint(); }
+  if (audioBtn && hasAudio) {
+    audioBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (WAMAudio.isOn()) { WAMAudio.stop(); try { sessionStorage.setItem('wam-audio', 'off'); } catch (x) {} }
+      else { WAMAudio.start(); try { sessionStorage.setItem('wam-audio', 'on'); } catch (x) {} }
+      updateAudioUI(); hideHint();
+    });
+    var pref = null; try { pref = sessionStorage.getItem('wam-audio'); } catch (e) {}
+    if (pref !== 'off') {
+      var evs = ['pointerdown', 'touchstart', 'keydown', 'click'];
+      var onceStart = function (ev) {
+        evs.forEach(function (n) { window.removeEventListener(n, onceStart, true); });
+        if (ev && ev.target && ev.target.closest && ev.target.closest('#wam-audio')) return; // let the button handle itself
+        audioOn();
+      };
+      evs.forEach(function (n) { window.addEventListener(n, onceStart, true); });
+      setTimeout(hideHint, 9000);
+    } else { hideHint(); }
+  } else { hideHint(); }
+
+  function mood(name) { if (hasAudio && WAMAudio.setMood) WAMAudio.setMood(name); }
+
   // embers
   (function () {
     if (reduce) return;
@@ -78,6 +107,7 @@
 
   function startMood() {
     intro.classList.add('wam-mood');
+    mood('warm');
     if (canvas) canvas.style.display = 'none';
     if (loadBackgrounds() > 0) setTimeout(loadBackgrounds, 250);
     if (reduce) { scenes[0].classList.add('is-active'); outro(); return; }
@@ -102,6 +132,7 @@
 
     loadBackgrounds(); // warm up mood renders behind
 
+    mood('cosmos');
     var canUseCosmos = !reduce && window.WAMCosmos && window.WAMCosmos.supported && window.WAMCosmos.supported();
     if (!canUseCosmos) { startMood(); return; }
 
