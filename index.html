@@ -267,8 +267,93 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
   .wam-btn{ padding:10px 13px; }
 }
 
+/* ===================== COSMIC PROLOGUE ===================== */
+#wam-cosmos-canvas{ position:absolute; inset:0; z-index:50; width:100%; height:100%; display:block; background:#05060b; }
+#wam-intro.wam-mood #wam-cosmos-canvas{ display:none; }
+
+/* continuous dive: Rockies -> Lakewood */
+.wam-descent{ position:absolute; inset:0; z-index:52; opacity:0; overflow:hidden; pointer-events:none; }
+.wam-descent.is-on{ opacity:1; }
+#wam-intro.wam-mood .wam-descent{ display:none; }
+.wam-descent__layer{ position:absolute; inset:-12%; background-size:cover; background-position:center 55%; opacity:0; will-change:transform,opacity; }
+.wam-descent--rockies{ background-image:url("assets/rockies.jpg"); }
+.wam-descent--lakewood{ background-image:url("assets/lakewood.jpg"); }
+.wam-descent.is-on .wam-descent--rockies{ animation:wamDiveRock 3.2s cubic-bezier(.4,0,.7,1) forwards; }
+.wam-descent.is-on .wam-descent--lakewood{ animation:wamDiveLake 3.8s cubic-bezier(.3,0,.5,1) 2.0s forwards; }
+@keyframes wamDiveRock{ 0%{opacity:0; transform:scale(1.05) translateY(-2%);} 12%{opacity:1;} 100%{opacity:0; transform:scale(2.15) translateY(7%);} }
+@keyframes wamDiveLake{ 0%{opacity:0; transform:scale(1.2) translateY(-5%);} 28%{opacity:1;} 100%{opacity:1; transform:scale(1.48) translateY(2%);} }
+.wam-descent__haze{ position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(214,228,243,.65), rgba(205,218,236,.28) 42%, rgba(255,244,228,.16)); opacity:0; }
+.wam-descent.is-on .wam-descent__haze{ animation:wamHaze 3.6s ease-out forwards; }
+@keyframes wamHaze{ 0%{opacity:.9;} 100%{opacity:0;} }
+
+.wam-place{ position:absolute; z-index:56; left:0; right:0; bottom:23%; text-align:center; padding:0 24px; opacity:0; pointer-events:none; }
+.wam-place span{ font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.015em;
+  font-size:clamp(30px,8.5vw,70px); color:#fff; text-shadow:0 4px 34px rgba(0,0,0,.65), 0 0 50px rgba(120,170,255,.3); }
+.wam-place.is-in{ animation:wamPlace 2.4s ease forwards; }
+@keyframes wamPlace{ 0%{opacity:0; transform:translateY(22px) scale(.98); filter:blur(9px);} 24%{opacity:1; transform:none; filter:blur(0);} 80%{opacity:1;} 100%{opacity:0;} }
+
+.wam-white{ position:absolute; inset:0; z-index:60; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 54%, #ffffff 0%, #eaf2ff 42%, #dfeaff 72%); }
+.wam-white.is-in{ opacity:1; transition:opacity .7s ease; }
+.wam-white.is-bloom{ animation:wamWhiteBloom 1.05s ease-out;
+  background:radial-gradient(circle at 50% 56%, rgba(255,239,206,.96), rgba(242,184,102,.42) 46%, rgba(242,184,102,0) 72%); }
+@keyframes wamWhiteBloom{ 0%{opacity:0;} 30%{opacity:.9;} 100%{opacity:0;} }
+
+#wam-intro.wam-mood .wam-dots{ opacity:1; } .wam-dots{ opacity:0; }
+
+/* ===================== THEATER ===================== */
+#wam-theater{ position:fixed; inset:0; z-index:100000; opacity:0; visibility:hidden;
+  background:transparent; overflow:hidden; font-family:'Urbanist','Inter',sans-serif; }
+#wam-theater.is-in{ opacity:1; visibility:visible; transition:opacity .8s ease; }
+#wam-theater.is-out{ opacity:0; transition:opacity .7s ease; }
+.wam-th-glow{ position:absolute; left:50%; top:30%; width:130vmax; height:85vmax; transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse at center, rgba(255,208,146,.2), rgba(0,0,0,0) 62%); pointer-events:none; }
+
+.wam-curtain{ position:absolute; top:0; bottom:0; width:56%; z-index:3; will-change:transform;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0) 12%, rgba(0,0,0,0) 88%, rgba(0,0,0,.55)),
+    repeating-linear-gradient(90deg, #560909 0, #861414 16px, #a71f1f 30px, #6c0d0d 46px, #520808 62px);
+  box-shadow: inset 0 0 130px rgba(0,0,0,.55);
+  transition: transform 2.1s cubic-bezier(.76,0,.24,1); }
+.wam-curtain--l{ left:0; border-right:2px solid rgba(0,0,0,.45); }
+.wam-curtain--r{ right:0; border-left:2px solid rgba(0,0,0,.45); }
+#wam-theater.is-open .wam-curtain--l{ transform:translateX(-103%); }
+#wam-theater.is-open .wam-curtain--r{ transform:translateX(103%); }
+
+.wam-valance{ position:absolute; top:0; left:0; right:0; height:15%; z-index:4;
+  background: repeating-linear-gradient(90deg, #560909 0, #861414 16px, #a71f1f 30px, #6c0d0d 46px, #520808 62px);
+  box-shadow: 0 10px 34px rgba(0,0,0,.55);
+  -webkit-mask-image: radial-gradient(circle 26px at 26px 100%, transparent 95%, #000 96%);
+  -webkit-mask-size: 52px 100%; -webkit-mask-repeat: repeat-x;
+  mask-image: radial-gradient(circle 26px at 26px 100%, transparent 95%, #000 96%);
+  mask-size: 52px 100%; mask-repeat: repeat-x;
+  transition: transform 1.3s ease .2s; }
+#wam-theater.is-open .wam-valance{ transform:translateY(-106%); }
+
+.wam-marquee{ position:absolute; left:50%; top:18%; transform:translateX(-50%); z-index:5;
+  width:min(80vw,520px); padding:20px 26px; text-align:center; border-radius:16px;
+  background:linear-gradient(180deg,#221306,#120a05); border:2px solid #8a5a1e;
+  box-shadow:0 0 44px rgba(255,190,110,.4), inset 0 0 30px rgba(0,0,0,.6);
+  transition: opacity .6s ease, transform .9s ease; }
+#wam-theater.is-open .wam-marquee{ opacity:0; transform:translateX(-50%) translateY(-44px); }
+.wam-marquee__row{ height:14px; margin:3px 0;
+  background-image: radial-gradient(circle, #ffe3a0 0 3px, rgba(255,227,160,0) 4px);
+  background-size:22px 14px; background-repeat:repeat-x; background-position:center;
+  filter: drop-shadow(0 0 5px #ffc666); animation:wamBulbs .7s steps(1,end) infinite; }
+.wam-marquee__row:last-child{ animation-delay:.35s; }
+@keyframes wamBulbs{ 50%{ background-position-x:11px; } }
+.wam-marquee__text{ display:flex; flex-direction:column; gap:5px; padding:10px 0; }
+.wam-marquee__a{ font-weight:700; letter-spacing:.01em; font-size:clamp(30px,8vw,56px); line-height:1;
+  color:#ffd98a; text-shadow:0 0 20px rgba(255,190,110,.75); }
+.wam-marquee__b{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:clamp(13px,3.6vw,20px);
+  color:#f3c27a; text-shadow:0 0 12px rgba(255,190,110,.5); }
+
 /* ===================== REDUCED MOTION ===================== */
 @media (prefers-reduced-motion:reduce){
+  #wam-cosmos-canvas{ display:none; }
+  .wam-descent{ display:none; } .wam-white{ display:none; } .wam-place{ display:none; }
+  .wam-curtain, .wam-valance, .wam-marquee{ transition:none !important; }
   .wam-scene__img{ animation:none !important; transform:scale(1.05) !important; }
   .wam-scene{ transition:opacity .4s ease; }
   .wam-ember{ display:none; }
@@ -287,7 +372,19 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
 <!-- ===================== CINEMATIC INTRO ===================== -->
 <div id="wam-intro" role="dialog" aria-label="Warm Alpine Modern — intro experience">
 
-  <!-- fly-through of the real renders (backgrounds wired up at runtime) -->
+  <!-- 3D space flight -->
+  <canvas id="wam-cosmos-canvas" aria-hidden="true"></canvas>
+
+  <!-- continuous dive through the Rockies into Lakewood -->
+  <div class="wam-descent" aria-hidden="true">
+    <div class="wam-descent__layer wam-descent--rockies"></div>
+    <div class="wam-descent__layer wam-descent--lakewood"></div>
+    <div class="wam-descent__haze"></div>
+  </div>
+  <div class="wam-place" aria-hidden="true"><span>Lakewood, Colorado</span></div>
+  <div class="wam-white" aria-hidden="true"></div>
+
+  <!-- fly-through of the real renders -->
   <div class="wam-scenes" aria-hidden="true">
     <div class="wam-scene" data-img="87d52af9-01de-443c-b71e-043e1cbcb038"><div class="wam-scene__img"></div></div>
     <div class="wam-scene" data-img="efebd6bf-a03f-404c-b166-da2c0eda4573"><div class="wam-scene__img"></div></div>
@@ -301,18 +398,13 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
   <div class="wam-flash" aria-hidden="true"></div>
   <div class="wam-embers" aria-hidden="true"></div>
 
-  <!-- per-scene caption -->
   <div class="wam-cap" aria-hidden="true">
     <p class="wam-cap__word"></p>
     <p class="wam-cap__sub"></p>
   </div>
 
-  <!-- progress -->
-  <div class="wam-dots" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
+  <div class="wam-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
-  <!-- final lockup -->
   <div class="wam-stage">
     <div class="wam-lockup">
       <p class="wam-eyebrow">House mood board</p>
@@ -326,6 +418,19 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
   </div>
 
   <button type="button" id="wam-skip" class="wam-skip">Skip ↦</button>
+</div>
+
+<!-- ===================== THEATER REVEAL (on Enter) ===================== -->
+<div id="wam-theater" aria-hidden="true">
+  <div class="wam-th-glow" aria-hidden="true"></div>
+  <div class="wam-valance" aria-hidden="true"></div>
+  <div class="wam-marquee">
+    <div class="wam-marquee__row" aria-hidden="true"></div>
+    <div class="wam-marquee__text"><span class="wam-marquee__a">Arriel&rsquo;s</span><span class="wam-marquee__b">Founding Clients</span></div>
+    <div class="wam-marquee__row" aria-hidden="true"></div>
+  </div>
+  <div class="wam-curtain wam-curtain--l" aria-hidden="true"></div>
+  <div class="wam-curtain wam-curtain--r" aria-hidden="true"></div>
 </div>
 
 <!-- ===================== TOP BAR ===================== -->
@@ -347,7 +452,22 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
 
 <div style="background: #1C1915; color: #F4EDE2; font-family: Inter, system-ui, sans-serif" data-canvas-width="1440" data-canvas-height="6200" data-document-role="page" data-label="Warm Alpine Modern · Mood Board">
 
-  <header style="max-width: 1200px; margin: 0 auto; padding: 72px 24px 40px; display: flex; flex-direction: column; gap: 18px">
+  <section style="max-width: 1200px; margin: 0 auto; padding: 52px 24px 0">
+    <p style="margin: 0 0 16px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #C9A35E">The palette</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(98px, 1fr)); gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #F4EFE7; border: 1px solid rgba(244,237,226,0.12)"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Gallery White</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#F4EFE7</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #ECE8E1; border: 1px solid rgba(244,237,226,0.12)"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">White Marble</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#ECE8E1</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #C99A5E"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Honey Maple</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#C99A5E</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #9A4F26"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Cognac Leather</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#9A4F26</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #535B37"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Olive Velvet</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#535B37</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #C9A35E"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Brass</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#C9A35E</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #F2B866"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Amber Glow</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#F2B866</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #1F4E5F"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Alpine Teal</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#1F4E5F</p></div></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><div style="height: 62px; border-radius: 12px; background: #1C1915; border: 1px solid rgba(244,237,226,0.18)"></div><div><p style="margin: 0; font-size: 13px; font-weight: 600; color: #F4EDE2">Espresso</p><p style="margin: 0; font-size: 11px; letter-spacing: 0.04em; color: #B8AD9D">#1C1915</p></div></div>
+    </div>
+  </section>
+
+  <header style="max-width: 1200px; margin: 0 auto; padding: 48px 24px 40px; display: flex; flex-direction: column; gap: 18px">
     <p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #C9A35E">House mood board</p>
     <h1 style="margin: 0; font-family: Urbanist, Inter, sans-serif; font-size: clamp(48px, 8vw, 104px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Warm Alpine Modern</h1>
     <p style="margin: 0; max-width: 720px; font-size: clamp(17px, 1.8vw, 21px); line-height: 1.55; color: #D4CABB">A bright white shell warmed with honey wood, velvet, leather and brass. Sleek and organized by day, glowing and cozy by night, with your adventures and interests woven in.</p>
@@ -536,10 +656,203 @@ var M={"87d52af9-01de-443c-b71e-043e1cbcb038": "data:image/jpeg;base64,/9j/4AAQS
 document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttribute('data-img')];});
 })();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script id="wam-cosmos">
+/* ============================================================
+   WAMCosmos — real-time 3D flight: stars -> 3D Earth -> atmosphere,
+   then hands off to the DOM "descent" (Rockies -> Lakewood).
+   Requires global THREE (loaded from CDN before this file).
+   ============================================================ */
+(function () {
+  window.WAMCosmos = {
+    supported: function () { return !!window.THREE && hasWebGL(); },
+    play: play
+  };
+
+  function hasWebGL() {
+    try { var c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); }
+    catch (e) { return false; }
+  }
+
+  // timeline (seconds)
+  var T_WARP_PEAK = 2.4;
+  var T_EARTH_FILL = 6.0;     // earth fills the frame
+  var T_WHITE_IN  = 6.1;
+  var T_DESCENT   = 6.7;      // DOM descent begins (canvas fades under whiteout)
+  var T_LABEL     = 10.2;
+  var T_BLOOM     = 11.4;
+  var T_DONE      = 12.1;
+
+  function play(opts) {
+    var THREE = window.THREE;
+    var canvas   = opts.canvas;
+    var descent  = opts.descentEl;
+    var place    = opts.placeEl;
+    var white    = opts.whiteEl;
+    var onDone   = opts.onComplete || function () {};
+    var base     = opts.assetsBase || 'assets/';
+
+    var W = window.innerWidth, H = window.innerHeight;
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    renderer.setSize(W, H, false);
+
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x05060b);
+    var camera = new THREE.PerspectiveCamera(62, W / H, 0.1, 4000);
+    camera.position.set(0, 0, 0);
+
+    // ---- stars ----
+    var STAR_N = 5200, spread = 420, depth = 1100;
+    var pos = new Float32Array(STAR_N * 3);
+    for (var i = 0; i < STAR_N; i++) {
+      pos[i*3]   = (Math.random()*2 - 1) * spread;
+      pos[i*3+1] = (Math.random()*2 - 1) * spread;
+      pos[i*3+2] = -Math.random() * depth;
+    }
+    var starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    var stars = new THREE.Points(starGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 2.2, sizeAttenuation: true, transparent: true, opacity: 0.95, depthWrite: false
+    }));
+    scene.add(stars);
+
+    var loader = new THREE.TextureLoader();
+
+    // ---- Milky Way skybox (surrounds the camera, no seams) ----
+    var sky = null;
+    loader.load(base + 'galaxy.jpg', function (tex) {
+      if (tex.colorSpace !== undefined && THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+      sky = new THREE.Mesh(
+        new THREE.SphereGeometry(2600, 40, 40),
+        new THREE.MeshBasicMaterial({ map: tex, side: THREE.BackSide, depthWrite: false })
+      );
+      scene.add(sky);
+    });
+
+    // ---- Earth + atmosphere (starts as a distant dot) ----
+    var earthGroup = new THREE.Group();
+    earthGroup.position.set(0, 0, -1500);
+    scene.add(earthGroup);
+    var EARTH_R = 62;
+    var earth = new THREE.Mesh(
+      new THREE.SphereGeometry(EARTH_R, 64, 64),
+      new THREE.MeshStandardMaterial({ roughness: 1, metalness: 0, color: 0x889099 })
+    );
+    earthGroup.add(earth);
+    loader.load(base + 'earthmap.jpg', function (tex) {
+      if (tex.colorSpace !== undefined && THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+      earth.material.map = tex; earth.material.color.set(0xffffff); earth.material.needsUpdate = true;
+    });
+    earth.rotation.y = 0.0;   // North America faces the camera at arrival (tuned)
+    earth.rotation.x = 0.18;
+
+    var atm = new THREE.Mesh(
+      new THREE.SphereGeometry(EARTH_R * 1.14, 48, 48),
+      new THREE.ShaderMaterial({
+        uniforms: { glowColor: { value: new THREE.Color(0x6cb7ff) }, c: { value: 0.62 }, p: { value: 4.2 } },
+        vertexShader: 'varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+        fragmentShader: 'uniform vec3 glowColor; uniform float c; uniform float p; varying vec3 vN; void main(){ float i = pow(clamp(c - dot(vN, vec3(0.0,0.0,1.0)), 0.0, 1.0), p); gl_FragColor = vec4(glowColor, 1.0) * i; }',
+        side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
+      })
+    );
+    earthGroup.add(atm);
+
+    scene.add(new THREE.AmbientLight(0x2a3b55, 0.45));
+    var sun = new THREE.DirectionalLight(0xfff0d8, 1.5);
+    sun.position.set(-1, 0.35, 0.8);
+    scene.add(sun);
+
+    // ---- loop ----
+    var started = false, t0 = 0, raf = 0, done = false;
+    var fired = { white: false, descent: false, label: false, bloom: false, done: false };
+
+    function lerp(a, b, p) { return a + (b - a) * p; }
+    function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+    function smooth(x) { x = clamp01(x); return x * x * (3 - 2 * x); }
+
+    function speedAt(t) {
+      if (t < T_WARP_PEAK) return lerp(3, 30, smooth(t / T_WARP_PEAK));
+      return lerp(30, 7, smooth((t - T_WARP_PEAK) / 3.2));
+    }
+
+    function frame(now) {
+      if (!started) { t0 = now; started = true; }
+      var t = (now - t0) / 1000;
+      var dt = Math.min(0.05, (now - (frame._last || now)) / 1000); frame._last = now;
+
+      // stars fly past
+      var sp = speedAt(t), p = stars.geometry.attributes.position.array;
+      for (var i = 0; i < STAR_N; i++) {
+        p[i*3+2] += sp * dt * 60;
+        if (p[i*3+2] > 6) { p[i*3+2] -= depth; p[i*3] = (Math.random()*2-1)*spread; p[i*3+1] = (Math.random()*2-1)*spread; }
+      }
+      stars.geometry.attributes.position.needsUpdate = true;
+
+      // slow skybox drift for subtle parallax
+      if (sky) sky.rotation.y += dt * 0.006;
+
+      // earth grows from a distant dot and fills the frame
+      var ep = smooth((t - 1.4) / (T_EARTH_FILL - 1.4));
+      earthGroup.position.z = lerp(-1500, -108, ep);
+      if (t > T_EARTH_FILL) earthGroup.position.z = lerp(-108, -66, smooth((t - T_EARTH_FILL) / 0.9)); // push into surface
+      earth.rotation.y += dt * 0.04;
+      stars.material.opacity = lerp(0.95, 0.15, smooth((t - 3.5) / 2.5));
+
+      renderer.render(scene, camera);
+
+      // timeline hooks
+      if (!fired.white && t >= T_WHITE_IN) { fired.white = true; if (white) white.classList.add('is-in'); }
+      if (!fired.descent && t >= T_DESCENT) {
+        fired.descent = true;
+        if (descent) descent.classList.add('is-on');
+        canvas.style.transition = 'opacity .9s ease'; canvas.style.opacity = '0';
+        if (white) setTimeout(function () { white.classList.remove('is-in'); }, 500); // clear whiteout to reveal dive
+      }
+      if (!fired.label && t >= T_LABEL) { fired.label = true; if (place) place.classList.add('is-in'); }
+      if (!fired.bloom && t >= T_BLOOM) { fired.bloom = true; if (white) { white.classList.add('is-bloom'); } }
+      if (!fired.done && t >= T_DONE) { fired.done = true; done = true; onDone(); }
+
+      if (done) { cancelAnimationFrame(raf); cleanup(); return; }
+      raf = requestAnimationFrame(frame);
+    }
+
+    function cleanup() {
+      // free GPU resources shortly after handoff
+      setTimeout(function () {
+        try {
+          starGeo.dispose(); stars.material.dispose();
+          earth.geometry.dispose(); earth.material.dispose();
+          atm.geometry.dispose(); atm.material.dispose();
+          if (sky) { sky.geometry.dispose(); sky.material.dispose(); }
+          renderer.dispose();
+        } catch (e) {}
+      }, 1200);
+    }
+
+    function onResize() {
+      W = window.innerWidth; H = window.innerHeight;
+      camera.aspect = W / H; camera.updateProjectionMatrix();
+      renderer.setSize(W, H, false);
+    }
+    window.addEventListener('resize', onResize);
+
+    raf = requestAnimationFrame(frame);
+
+    return {
+      skip: function () { done = true; cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); cleanup(); },
+      destroy: function () { done = true; cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); cleanup(); }
+    };
+  }
+})();
+
+</script>
 <script id="wam-script">
 (function () {
   var intro  = document.getElementById('wam-intro');
   var topbar = document.getElementById('wam-topbar');
+  var theater= document.getElementById('wam-theater');
   if (!intro) return;
 
   var enterBtn = document.getElementById('wam-enter');
@@ -551,14 +864,18 @@ document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttr
   var capSub   = intro.querySelector('.wam-cap__sub');
   var flash    = intro.querySelector('.wam-flash');
   var dots     = [].slice.call(intro.querySelectorAll('.wam-dots span'));
+  var canvas   = document.getElementById('wam-cosmos-canvas');
+  var descent  = intro.querySelector('.wam-descent');
+  var place    = intro.querySelector('.wam-place');
+  var white    = intro.querySelector('.wam-white');
 
   var root   = document.documentElement;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var SCENE_MS = 3000;                 // 5 scenes x 3s = 15s fly-through
+  var SCENE_MS = 3000;
   var EXIT_MS  = reduce ? 360 : 1150;
   var timers = [];
+  var cosmos = null;
 
-  // captions straight from the mood board's own copy
   var CAPTIONS = [
     { word: 'Warm.',      sub: 'The living room, at dusk' },
     { word: 'Sleek.',     sub: 'Whites & marble · brass warmth' },
@@ -585,49 +902,36 @@ document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttr
     }
   })();
 
-  // wire each scene's background to the matching render already in the board
   function loadBackgrounds() {
     var map = {};
     document.querySelectorAll('img[data-img]').forEach(function (im) {
-      var src = im.currentSrc || im.src;
-      if (src) map[im.getAttribute('data-img')] = src;
+      var src = im.currentSrc || im.src; if (src) map[im.getAttribute('data-img')] = src;
     });
     var missing = 0;
     scenes.forEach(function (s) {
-      var id = s.getAttribute('data-img');
-      var layer = s.querySelector('.wam-scene__img');
-      if (map[id]) layer.style.backgroundImage = 'url("' + map[id] + '")';
-      else missing++;
+      var id = s.getAttribute('data-img'); var layer = s.querySelector('.wam-scene__img');
+      if (map[id]) layer.style.backgroundImage = 'url("' + map[id] + '")'; else missing++;
     });
     return missing;
   }
 
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+  // ---------- MOOD fly-through ----------
   function activate(i) {
     scenes.forEach(function (s, idx) { s.classList.toggle('is-active', idx === i); });
     dots.forEach(function (d, idx) { d.classList.toggle('is-on', idx === i); });
     if (flash) { flash.classList.remove('is-bloom'); void flash.offsetWidth; flash.classList.add('is-bloom'); }
-    capWord.textContent = CAPTIONS[i].word;
-    capSub.textContent  = CAPTIONS[i].sub;
+    capWord.textContent = CAPTIONS[i].word; capSub.textContent = CAPTIONS[i].sub;
     cap.classList.remove('is-in'); void cap.offsetWidth; cap.classList.add('is-in');
   }
+  function outro() { intro.classList.add('wam-outro', 'wam-ready'); }
 
-  function outro() {
-    intro.classList.add('wam-outro', 'wam-ready');
-  }
-
-  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
-
-  function startTimeline() {
-    clearTimers();
-    intro.classList.remove('wam-exit', 'wam-ready', 'wam-outro');
-    scenes.forEach(function (s) { s.classList.remove('is-active'); });
-    cap.classList.remove('is-in');
-    void intro.offsetWidth;
-
-    if (loadBackgrounds() > 0) setTimeout(loadBackgrounds, 250); // retry if board images not yet assigned
-
+  function startMood() {
+    intro.classList.add('wam-mood');
+    if (canvas) canvas.style.display = 'none';
+    if (loadBackgrounds() > 0) setTimeout(loadBackgrounds, 250);
     if (reduce) { scenes[0].classList.add('is-active'); outro(); return; }
-
     activate(0);
     for (var i = 1; i < scenes.length; i++) {
       (function (idx) { timers.push(setTimeout(function () { activate(idx); }, idx * SCENE_MS)); })(i);
@@ -635,42 +939,100 @@ document.querySelectorAll('img[data-img]').forEach(function(i){i.src=M[i.getAttr
     timers.push(setTimeout(outro, scenes.length * SCENE_MS));
   }
 
-  function enter() {
-    if (intro.classList.contains('wam-exit')) return;
+  // ---------- COSMIC prologue ----------
+  function startPrologue() {
     clearTimers();
+    intro.classList.remove('wam-exit', 'wam-ready', 'wam-outro', 'wam-mood');
+    scenes.forEach(function (s) { s.classList.remove('is-active'); });
+    cap.classList.remove('is-in');
+    if (descent) { descent.classList.remove('is-on'); }
+    if (place) place.classList.remove('is-in');
+    if (white) white.classList.remove('is-in', 'is-bloom');
+    if (canvas) { canvas.style.display = 'block'; canvas.style.opacity = '1'; canvas.style.transition = 'none'; }
+    void intro.offsetWidth;
+
+    loadBackgrounds(); // warm up mood renders behind
+
+    var canUseCosmos = !reduce && window.WAMCosmos && window.WAMCosmos.supported && window.WAMCosmos.supported();
+    if (!canUseCosmos) { startMood(); return; }
+
+    try {
+      cosmos = window.WAMCosmos.play({
+        canvas: canvas, descentEl: descent, placeEl: place, whiteEl: white,
+        assetsBase: 'assets/', onComplete: startMood
+      });
+    } catch (e) { startMood(); }
+    // safety net in case WebGL stalls
+    timers.push(setTimeout(function () { if (!intro.classList.contains('wam-mood')) { if (cosmos) cosmos.skip(); startMood(); } }, 16000));
+  }
+
+  // ---------- THEATER -> board ----------
+  function revealBoard() {
+    root.classList.remove('wam-intro-active');
+    intro.style.display = 'none';
+    if (theater) { theater.style.display = 'none'; }
+    window.scrollTo(0, 0);
+    topbar.classList.add('wam-show');
+  }
+
+  function enterViaTheater() {
+    topbar.setAttribute('aria-hidden', 'false');
+    theater.classList.add('is-in');
+    // once the theater covers the screen, hide the intro so the board sits right behind the curtains
+    timers.push(setTimeout(function () {
+      intro.style.display = 'none';
+      root.classList.add('wam-entered');
+    }, 850));
+    // hold on the marquee, then part the curtains
+    timers.push(setTimeout(function () { theater.classList.add('is-open'); }, 2450));
+    timers.push(setTimeout(function () { topbar.classList.add('wam-show'); }, 3050));
+    // curtains finished -> clear the theater, enable scrolling
+    timers.push(setTimeout(function () { theater.classList.add('is-out'); }, 4650));
+    timers.push(setTimeout(function () {
+      root.classList.remove('wam-intro-active');
+      theater.style.display = 'none'; window.scrollTo(0, 0);
+    }, 5350));
+  }
+
+  function enterQuick() {
     intro.classList.add('wam-exit');
     topbar.setAttribute('aria-hidden', 'false');
     root.classList.add('wam-entered');
-    setTimeout(function () {
-      root.classList.remove('wam-intro-active');
-      intro.style.display = 'none';
-      window.scrollTo(0, 0);
-      topbar.classList.add('wam-show');
-    }, EXIT_MS);
+    timers.push(setTimeout(revealBoard, EXIT_MS));
+  }
+
+  var entering = false;
+  function enter(withTheater) {
+    if (entering) return; entering = true;
+    clearTimers();
+    if (cosmos) { try { cosmos.skip(); } catch (e) {} cosmos = null; }
+    if (withTheater && !reduce && theater) enterViaTheater();
+    else enterQuick();
   }
 
   function replayIntro() {
-    topbar.classList.remove('wam-show');
-    topbar.setAttribute('aria-hidden', 'true');
+    entering = false;
+    clearTimers();
+    if (theater) { theater.classList.remove('is-in', 'is-open', 'is-out'); theater.style.display = ''; theater.setAttribute('aria-hidden', 'true'); }
+    topbar.classList.remove('wam-show'); topbar.setAttribute('aria-hidden', 'true');
     root.classList.remove('wam-entered');
     root.classList.add('wam-intro-active');
     intro.style.display = '';
     window.scrollTo(0, 0);
-    startTimeline();
+    startPrologue();
   }
 
-  enterBtn && enterBtn.addEventListener('click', function (e) { e.stopPropagation(); enter(); });
+  enterBtn && enterBtn.addEventListener('click', function (e) { e.stopPropagation(); enter(true); });
   replay   && replay.addEventListener('click',  function (e) { e.stopPropagation(); replayIntro(); });
-  skipBtn  && skipBtn.addEventListener('click',  function (e) { e.stopPropagation(); enter(); });
+  skipBtn  && skipBtn.addEventListener('click',  function (e) { e.stopPropagation(); enter(false); });
 
-  // once the sequence reaches the outro, a tap anywhere enters
   intro.addEventListener('click', function (ev) {
     if (!intro.classList.contains('wam-ready')) return;
     if (ev.target.closest('#wam-skip') || ev.target.closest('#wam-enter')) return;
-    enter();
+    enter(true);
   });
 
-  startTimeline();
+  startPrologue();
 })();
 
 </script>

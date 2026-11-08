@@ -2,6 +2,12 @@ node_modules/
 package-lock.json
 shot-*.png
 fly-*.png
+c-*.png
+e-*.png
+d-*.png
+palette-top.png
 pdf-preview.png
-verify.js
+verify*.js
 v2.js
+vtop.js
+fetch_*.py

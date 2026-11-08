@@ -198,8 +198,93 @@ html.wam-entered body > div[data-document-role="page"]{ padding-top:calc(var(--w
   .wam-btn{ padding:10px 13px; }
 }
 
+/* ===================== COSMIC PROLOGUE ===================== */
+#wam-cosmos-canvas{ position:absolute; inset:0; z-index:50; width:100%; height:100%; display:block; background:#05060b; }
+#wam-intro.wam-mood #wam-cosmos-canvas{ display:none; }
+
+/* continuous dive: Rockies -> Lakewood */
+.wam-descent{ position:absolute; inset:0; z-index:52; opacity:0; overflow:hidden; pointer-events:none; }
+.wam-descent.is-on{ opacity:1; }
+#wam-intro.wam-mood .wam-descent{ display:none; }
+.wam-descent__layer{ position:absolute; inset:-12%; background-size:cover; background-position:center 55%; opacity:0; will-change:transform,opacity; }
+.wam-descent--rockies{ background-image:url("assets/rockies.jpg"); }
+.wam-descent--lakewood{ background-image:url("assets/lakewood.jpg"); }
+.wam-descent.is-on .wam-descent--rockies{ animation:wamDiveRock 3.2s cubic-bezier(.4,0,.7,1) forwards; }
+.wam-descent.is-on .wam-descent--lakewood{ animation:wamDiveLake 3.8s cubic-bezier(.3,0,.5,1) 2.0s forwards; }
+@keyframes wamDiveRock{ 0%{opacity:0; transform:scale(1.05) translateY(-2%);} 12%{opacity:1;} 100%{opacity:0; transform:scale(2.15) translateY(7%);} }
+@keyframes wamDiveLake{ 0%{opacity:0; transform:scale(1.2) translateY(-5%);} 28%{opacity:1;} 100%{opacity:1; transform:scale(1.48) translateY(2%);} }
+.wam-descent__haze{ position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(214,228,243,.65), rgba(205,218,236,.28) 42%, rgba(255,244,228,.16)); opacity:0; }
+.wam-descent.is-on .wam-descent__haze{ animation:wamHaze 3.6s ease-out forwards; }
+@keyframes wamHaze{ 0%{opacity:.9;} 100%{opacity:0;} }
+
+.wam-place{ position:absolute; z-index:56; left:0; right:0; bottom:23%; text-align:center; padding:0 24px; opacity:0; pointer-events:none; }
+.wam-place span{ font-family:'Urbanist','Inter',sans-serif; font-weight:700; letter-spacing:.015em;
+  font-size:clamp(30px,8.5vw,70px); color:#fff; text-shadow:0 4px 34px rgba(0,0,0,.65), 0 0 50px rgba(120,170,255,.3); }
+.wam-place.is-in{ animation:wamPlace 2.4s ease forwards; }
+@keyframes wamPlace{ 0%{opacity:0; transform:translateY(22px) scale(.98); filter:blur(9px);} 24%{opacity:1; transform:none; filter:blur(0);} 80%{opacity:1;} 100%{opacity:0;} }
+
+.wam-white{ position:absolute; inset:0; z-index:60; pointer-events:none; opacity:0;
+  background:radial-gradient(circle at 50% 54%, #ffffff 0%, #eaf2ff 42%, #dfeaff 72%); }
+.wam-white.is-in{ opacity:1; transition:opacity .7s ease; }
+.wam-white.is-bloom{ animation:wamWhiteBloom 1.05s ease-out;
+  background:radial-gradient(circle at 50% 56%, rgba(255,239,206,.96), rgba(242,184,102,.42) 46%, rgba(242,184,102,0) 72%); }
+@keyframes wamWhiteBloom{ 0%{opacity:0;} 30%{opacity:.9;} 100%{opacity:0;} }
+
+#wam-intro.wam-mood .wam-dots{ opacity:1; } .wam-dots{ opacity:0; }
+
+/* ===================== THEATER ===================== */
+#wam-theater{ position:fixed; inset:0; z-index:100000; opacity:0; visibility:hidden;
+  background:transparent; overflow:hidden; font-family:'Urbanist','Inter',sans-serif; }
+#wam-theater.is-in{ opacity:1; visibility:visible; transition:opacity .8s ease; }
+#wam-theater.is-out{ opacity:0; transition:opacity .7s ease; }
+.wam-th-glow{ position:absolute; left:50%; top:30%; width:130vmax; height:85vmax; transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse at center, rgba(255,208,146,.2), rgba(0,0,0,0) 62%); pointer-events:none; }
+
+.wam-curtain{ position:absolute; top:0; bottom:0; width:56%; z-index:3; will-change:transform;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0) 12%, rgba(0,0,0,0) 88%, rgba(0,0,0,.55)),
+    repeating-linear-gradient(90deg, #560909 0, #861414 16px, #a71f1f 30px, #6c0d0d 46px, #520808 62px);
+  box-shadow: inset 0 0 130px rgba(0,0,0,.55);
+  transition: transform 2.1s cubic-bezier(.76,0,.24,1); }
+.wam-curtain--l{ left:0; border-right:2px solid rgba(0,0,0,.45); }
+.wam-curtain--r{ right:0; border-left:2px solid rgba(0,0,0,.45); }
+#wam-theater.is-open .wam-curtain--l{ transform:translateX(-103%); }
+#wam-theater.is-open .wam-curtain--r{ transform:translateX(103%); }
+
+.wam-valance{ position:absolute; top:0; left:0; right:0; height:15%; z-index:4;
+  background: repeating-linear-gradient(90deg, #560909 0, #861414 16px, #a71f1f 30px, #6c0d0d 46px, #520808 62px);
+  box-shadow: 0 10px 34px rgba(0,0,0,.55);
+  -webkit-mask-image: radial-gradient(circle 26px at 26px 100%, transparent 95%, #000 96%);
+  -webkit-mask-size: 52px 100%; -webkit-mask-repeat: repeat-x;
+  mask-image: radial-gradient(circle 26px at 26px 100%, transparent 95%, #000 96%);
+  mask-size: 52px 100%; mask-repeat: repeat-x;
+  transition: transform 1.3s ease .2s; }
+#wam-theater.is-open .wam-valance{ transform:translateY(-106%); }
+
+.wam-marquee{ position:absolute; left:50%; top:18%; transform:translateX(-50%); z-index:5;
+  width:min(80vw,520px); padding:20px 26px; text-align:center; border-radius:16px;
+  background:linear-gradient(180deg,#221306,#120a05); border:2px solid #8a5a1e;
+  box-shadow:0 0 44px rgba(255,190,110,.4), inset 0 0 30px rgba(0,0,0,.6);
+  transition: opacity .6s ease, transform .9s ease; }
+#wam-theater.is-open .wam-marquee{ opacity:0; transform:translateX(-50%) translateY(-44px); }
+.wam-marquee__row{ height:14px; margin:3px 0;
+  background-image: radial-gradient(circle, #ffe3a0 0 3px, rgba(255,227,160,0) 4px);
+  background-size:22px 14px; background-repeat:repeat-x; background-position:center;
+  filter: drop-shadow(0 0 5px #ffc666); animation:wamBulbs .7s steps(1,end) infinite; }
+.wam-marquee__row:last-child{ animation-delay:.35s; }
+@keyframes wamBulbs{ 50%{ background-position-x:11px; } }
+.wam-marquee__text{ display:flex; flex-direction:column; gap:5px; padding:10px 0; }
+.wam-marquee__a{ font-weight:700; letter-spacing:.01em; font-size:clamp(30px,8vw,56px); line-height:1;
+  color:#ffd98a; text-shadow:0 0 20px rgba(255,190,110,.75); }
+.wam-marquee__b{ font-weight:700; letter-spacing:.14em; text-transform:uppercase; font-size:clamp(13px,3.6vw,20px);
+  color:#f3c27a; text-shadow:0 0 12px rgba(255,190,110,.5); }
+
 /* ===================== REDUCED MOTION ===================== */
 @media (prefers-reduced-motion:reduce){
+  #wam-cosmos-canvas{ display:none; }
+  .wam-descent{ display:none; } .wam-white{ display:none; } .wam-place{ display:none; }
+  .wam-curtain, .wam-valance, .wam-marquee{ transition:none !important; }
   .wam-scene__img{ animation:none !important; transform:scale(1.05) !important; }
   .wam-scene{ transition:opacity .4s ease; }
   .wam-ember{ display:none; }

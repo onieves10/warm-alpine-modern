@@ -1,7 +1,19 @@
 <!-- ===================== CINEMATIC INTRO ===================== -->
 <div id="wam-intro" role="dialog" aria-label="Warm Alpine Modern — intro experience">
 
-  <!-- fly-through of the real renders (backgrounds wired up at runtime) -->
+  <!-- 3D space flight -->
+  <canvas id="wam-cosmos-canvas" aria-hidden="true"></canvas>
+
+  <!-- continuous dive through the Rockies into Lakewood -->
+  <div class="wam-descent" aria-hidden="true">
+    <div class="wam-descent__layer wam-descent--rockies"></div>
+    <div class="wam-descent__layer wam-descent--lakewood"></div>
+    <div class="wam-descent__haze"></div>
+  </div>
+  <div class="wam-place" aria-hidden="true"><span>Lakewood, Colorado</span></div>
+  <div class="wam-white" aria-hidden="true"></div>
+
+  <!-- fly-through of the real renders -->
   <div class="wam-scenes" aria-hidden="true">
     <div class="wam-scene" data-img="87d52af9-01de-443c-b71e-043e1cbcb038"><div class="wam-scene__img"></div></div>
     <div class="wam-scene" data-img="efebd6bf-a03f-404c-b166-da2c0eda4573"><div class="wam-scene__img"></div></div>
@@ -15,18 +27,13 @@
   <div class="wam-flash" aria-hidden="true"></div>
   <div class="wam-embers" aria-hidden="true"></div>
 
-  <!-- per-scene caption -->
   <div class="wam-cap" aria-hidden="true">
     <p class="wam-cap__word"></p>
     <p class="wam-cap__sub"></p>
   </div>
 
-  <!-- progress -->
-  <div class="wam-dots" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
+  <div class="wam-dots" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
-  <!-- final lockup -->
   <div class="wam-stage">
     <div class="wam-lockup">
       <p class="wam-eyebrow">House mood board</p>
@@ -40,6 +47,19 @@
   </div>
 
   <button type="button" id="wam-skip" class="wam-skip">Skip ↦</button>
+</div>
+
+<!-- ===================== THEATER REVEAL (on Enter) ===================== -->
+<div id="wam-theater" aria-hidden="true">
+  <div class="wam-th-glow" aria-hidden="true"></div>
+  <div class="wam-valance" aria-hidden="true"></div>
+  <div class="wam-marquee">
+    <div class="wam-marquee__row" aria-hidden="true"></div>
+    <div class="wam-marquee__text"><span class="wam-marquee__a">Arriel&rsquo;s</span><span class="wam-marquee__b">Founding Clients</span></div>
+    <div class="wam-marquee__row" aria-hidden="true"></div>
+  </div>
+  <div class="wam-curtain wam-curtain--l" aria-hidden="true"></div>
+  <div class="wam-curtain wam-curtain--r" aria-hidden="true"></div>
 </div>
 
 <!-- ===================== TOP BAR ===================== -->
